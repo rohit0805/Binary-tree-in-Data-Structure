@@ -27,6 +27,29 @@ void levelorder(struct node *root){
 	}
 	cout<<endl;
 }
+int height(struct node *root){
+	if(root==NULL)
+		return 0;
+	return 1+max(height(root->left),height(root->right));
+}
+void check(struct node *root,int level){
+	if(root==NULL){
+		return;
+	}
+	else if(level==1){
+		cout<<root->data<<" ";
+	}
+	else if(level>1){
+		check(root->left,level-1);
+		check(root->right,level-1);
+	}
+}
+void printlevel(struct node *root){
+	int i,h=height(root);
+	for(i=1;i<=h;i++){
+		check(root,i);
+	}
+}
 int main(){
 	struct node *root=create(1);
 	root->left=create(2);
@@ -36,5 +59,7 @@ int main(){
 	root->right->left=create(6);
 	root->right->right=create(7);
 	levelorder(root);
+	cout<<endl;
+	printlevel(root);
 	return 0;
 }
