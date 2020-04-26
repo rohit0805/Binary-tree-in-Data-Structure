@@ -1,44 +1,30 @@
 #include<bits/stdc++.h>
 using namespace std;
-char tree[100];
-void root(char data){
-	if(tree[0]!='\0'){
-		cout<<"Tree root is acquired"<<endl;
-	}
-	else
-		tree[0]=data;
+
+struct node{
+	int data;
+	struct node *left,*right;
+};
+
+struct node* create(int data){
+	struct node *newnode=new node;
+	newnode->data=data;
+	newnode->left=newnode->right=NULL;
+	return newnode;
 }
-void set_right(char data,int parent){
-	if(tree[parent]=='\0'){
-		cout<<"\nCan't set child at "<<(parent)*2+2<<" ,no parent found";		
-	}
-	else{
-		tree[parent*2+2]=data;
-	}
-}
-void set_left(char data,int parent){
-	if(tree[parent]=='\0'){
-		cout<<"\nCan't set child at "<<(parent)*2+1<<" ,no parent found";
-	}
-	else{
-		tree[parent*2+1]=data;
-	}
-}
-void print_tree(){
-	cout<<endl;
-	for(int i=0;i<10;i++){
-		if(tree[i]!='\0')
-			cout<<tree[i];
-		else
-			cout<<"-";
-	}
+int size(struct node *root){
+	if(root==NULL)
+		return 0;
+	return 1+size(root->left)+size(root->right);
 }
 int main(){
-	root('A');
-	set_right('C',0);
-	set_left('D',1);
-	set_right('E',1);
-	set_right('F',2);
-	print_tree();
+	struct node *root=create(1);
+	root->left=create(2);
+	root->right=create(3);
+	root->left->left=create(4);
+	root->left->right=create(5);
+	root->right->left=create(6);
+	//root->right->right=create(7);
+	cout<<size(root)<<endl;
 	return 0;
 }
