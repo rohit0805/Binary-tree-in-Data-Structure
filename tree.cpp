@@ -17,6 +17,15 @@ int size(struct node *root){
 		return 0;
 	return 1+size(root->left)+size(root->right);
 }
+int maxi=INT_MIN;
+void maximum(struct node *root){
+	if(root==NULL)
+		return ;
+	if(root->data>maxi)
+		maxi=root->data;
+	maximum(root->left);
+	maximum(root->right);
+}
 int main(){
 	struct node *root=create(1);
 	root->left=create(2);
@@ -24,7 +33,9 @@ int main(){
 	root->left->left=create(4);
 	root->left->right=create(5);
 	root->right->left=create(6);
-	//root->right->right=create(7);
-	cout<<size(root)<<endl;
+	root->right->right=create(7);
+	//cout<<size(root)<<endl;
+	maximum(root);
+	cout<<maxi<<endl;
 	return 0;
 }
