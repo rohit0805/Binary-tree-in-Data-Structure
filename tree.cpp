@@ -12,19 +12,15 @@ struct node* create(int data){
 	newnode->left=newnode->right=NULL;
 	return newnode;
 }
-int size(struct node *root){
+void printkdistant(struct node *root,int k){
 	if(root==NULL)
-		return 0;
-	return 1+size(root->left)+size(root->right);
-}
-int maxi=INT_MIN;
-void maximum(struct node *root){
-	if(root==NULL)
-		return ;
-	if(root->data>maxi)
-		maxi=root->data;
-	maximum(root->left);
-	maximum(root->right);
+		return;
+	if(k==0){
+		cout<<root->data<<" ";
+		return;
+	}
+	printkdistant(root->left,k-1);
+	printkdistant(root->right,k-1);
 }
 int main(){
 	struct node *root=create(1);
@@ -34,8 +30,6 @@ int main(){
 	root->left->right=create(5);
 	root->right->left=create(6);
 	root->right->right=create(7);
-	//cout<<size(root)<<endl;
-	maximum(root);
-	cout<<maxi<<endl;
+	printkdistant(root,1);
 	return 0;
 }
