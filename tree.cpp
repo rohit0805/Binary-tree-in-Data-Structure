@@ -12,32 +12,52 @@ struct node* newNode(int data){
 	newnode->left=newnode->right=NULL;
 	return newnode;
 }
-int issumproperty(struct node *root){
-    if(root==NULL || (root->left==NULL && root->right==NULL)){
+int height(struct node *root){
+    if(root==NULL)return 0;
+    return 1+max(height(root->left),height(root->right));
+}
+int isbalanced(struct node *root){
+    if(root==NULL)
         return 1;
-    }
-    int leftsum=0,rightsum=0;
-    if(root->left)
-        leftsum=root->left->data;
-    if(root->right)
-        rightsum=root->right->data;
-    if(root->data==leftsum+rightsum && issumproperty(root->left) && issumproperty(root->right)){
-        return 1;        
+    int leftheight=0,rightheight=0;
+    leftheight=height(root->left);
+    rightheight=height(root->right);
+    if(abs(leftheight-rightheight)<=1 && isbalanced(root->left) && isbalanced(root->right)){
+        return 1;
     }
     return 0;
 }
-int main(){
-	struct node *root = newNode(10); 
-    root->left     = newNode(8); 
-    root->right = newNode(2); 
-    root->left->left = newNode(3); 
-    root->left->right = newNode(5); 
-    root->right->right = newNode(2); 
-    if(issumproperty(root)) 
-        cout << "The given tree satisfies "
-            << "the children sum property "; 
+int isbalancedfast(struct node *root,int *height){
+    int lh=0,rh=0,l,r;
+    if(root==NULL){
+        *height=0;
+        return 1;
+    }
+    l=isbalancedfast(root->left,&lh);
+    r=isbalancedfast(root->right,&rh);
+    *height=(lh>rh?lh:rh)+1;
+    if(abs(lh-rh)>=2)
+        return 0;
     else
-        cout << "The given tree does not satisfy "
-            << "the children sum property "; 
+        return l&&r;
+}
+int main(){
+	struct node* root = newNode(1); 
+    root->left = newNode(2); 
+    root->right = newNode(3); 
+    root->left->left = newNode(4); 
+    root->left->right = newNode(5); 
+    root->left->left->left = newNode(8); 
+    int height=0;
+    if (isbalanced(root)) 
+        cout << "Tree is balanced"; 
+    else
+        cout << "Tree is not balanced";
+    cout<<endl;
+    if (isbalancedfast(root,&height)) 
+        cout << "Tree is balanced"; 
+    else
+        cout << "Tree is not balanced"; 
+    
 	return 0;
 }
